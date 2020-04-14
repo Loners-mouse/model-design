@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.zte.ums.zenap</groupId>
+		<artifactId>zenap-parentpom</artifactId>
+		<version>1.20.10.06P01</version>
+	</parent>
+
+	<groupId>com.zte.ums.em</groupId>
+	<artifactId>model-design-parent</artifactId>
+	<version>16.17.10.D-SNAPSHOT</version>
+
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>model-thread</module>
+		<module>model-visitor</module>
+        <module>model-interpreter</module>
+		<module>model-flyweight</module>
+        <module>model-mediator</module>
+    </modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>3.0.4</version>
+					<configuration>
+						<findbugsXmlOutput>true</findbugsXmlOutput>
+						<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+						<xmlOutput>true</xmlOutput>
+						<targetJdk>1.8</targetJdk>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.7</version>
+					<configuration>
+						<formats>
+							<format>html</format>
+							<format>xml</format>
+						</formats>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
