@@ -17,9 +17,10 @@ public class ConsumerThread implements Runnable {
 	@Override
 	public void run() {
 
-		while (true){
+		int i=0;
+		while (i<30){
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(30000);
 				//取出队列元素
 				Element element=blockingQueue.take();
 
@@ -28,6 +29,8 @@ public class ConsumerThread implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			i++;
 		}
+		BlockQueueHandler.getInstance().clear();
 	}
 }

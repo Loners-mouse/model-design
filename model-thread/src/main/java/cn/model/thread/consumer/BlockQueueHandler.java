@@ -48,4 +48,8 @@ public class BlockQueueHandler {
 			e.printStackTrace();
 		}
 	}
+
+	public void clear(){
+		blockingQueue.clear();
+	}
 }
