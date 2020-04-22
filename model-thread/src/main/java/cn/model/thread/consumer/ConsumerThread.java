@@ -17,20 +17,34 @@ public class ConsumerThread implements Runnable {
 	@Override
 	public void run() {
 
-		int i=0;
-		while (i<30){
+		while (true){
+			int size = blockingQueue.size();
+			if(size==0){
+				try {
+					//取出队列元素
+					Element element = blockingQueue.take();
+					//业务逻辑处理
+					log.info("consumer:{}",element);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			for(int i=0;i<size;i++) {
+				try {
+					//取出队列元素
+					Element element = blockingQueue.take();
+					//业务逻辑处理
+					log.info("consumer:{}",element);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			try {
 				Thread.sleep(30000);
-				//取出队列元素
-				Element element=blockingQueue.take();
-
-				//业务逻辑处理
-				log.info("consumer:{}",element);
-			} catch (InterruptedException e) {
+			} catch(InterruptedException e) {
 				e.printStackTrace();
 			}
-			i++;
 		}
-		BlockQueueHandler.getInstance().clear();
+
 	}
 }
