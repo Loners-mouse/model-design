@@ -1,55 +1,54 @@
 package cn.model.thread.consumer;
 
+import cn.model.thread.model.Element;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import cn.model.thread.model.Element;
-
 public class BlockQueueHandler {
 
-	public static BlockQueueHandler getInstance(){
-		return SingleTon.instance.getBlockQueueHandler();
-	}
+    private BlockingQueue<Element> blockingQueue = new ArrayBlockingQueue(1000);
 
-	private enum SingleTon{
-		instance;
-		private BlockQueueHandler blockQueueHandler;
+    public static BlockQueueHandler getInstance() {
+        return SingleTon.instance.getBlockQueueHandler();
+    }
 
-		private SingleTon(){
-			blockQueueHandler = new BlockQueueHandler();
-		}
+    public void putIfNot(Element element) {
+        if (!isExist(element)) {
+            put(element);
+        }
+    }
 
-		public BlockQueueHandler getBlockQueueHandler(){
-			return blockQueueHandler;
-		}
-	}
+    public boolean isExist(Element element) {
+        return blockingQueue.contains(element);
+    }
 
+    public BlockingQueue getBlockingQueue() {
+        return blockingQueue;
+    }
 
-	private BlockingQueue<Element> blockingQueue = new ArrayBlockingQueue(1000);
+    public void put(Element element) {
+        try {
+            blockingQueue.put(element);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public void putIfNot(Element element){
-		if(!isExist(element)){
-			put(element);
-		}
-	}
+    public void clear() {
+        blockingQueue.clear();
+    }
 
-	public boolean isExist(Element element){
-		return blockingQueue.contains(element);
-	}
+    private enum SingleTon {
+        instance;
+        private BlockQueueHandler blockQueueHandler;
 
-	public BlockingQueue getBlockingQueue(){
-		return blockingQueue;
-	}
+        private SingleTon() {
+            blockQueueHandler = new BlockQueueHandler();
+        }
 
-	public void put(Element element){
-		try {
-			blockingQueue.put(element);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void clear(){
-		blockingQueue.clear();
-	}
+        public BlockQueueHandler getBlockQueueHandler() {
+            return blockQueueHandler;
+        }
+    }
 }

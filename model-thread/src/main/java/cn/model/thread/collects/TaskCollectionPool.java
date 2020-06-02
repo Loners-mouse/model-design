@@ -9,64 +9,64 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskCollectionPool {
 
-	private ThreadPoolExecutor threadPoolExecutor;
+    private ThreadPoolExecutor threadPoolExecutor;
 
-	public static TaskCollectionPool getInstance(){
-		return SingleTon.instance.getTaskCollectionPool();
-	}
+    {
+        threadPoolExecutor = new ThreadPoolExecutor(1, 1, 120L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
+    }
 
-	private enum SingleTon{
-		instance;
-		private TaskCollectionPool taskCollectionPool;
+    public static TaskCollectionPool getInstance() {
+        return SingleTon.instance.getTaskCollectionPool();
+    }
 
-		private SingleTon(){
-			taskCollectionPool=new TaskCollectionPool();
-		}
+    public void doAction(TaskThread taskThread) {
+        put(taskThread.element.getId());
+        threadPoolExecutor.submit(taskThread);
+    }
 
-		public TaskCollectionPool getTaskCollectionPool(){
-			return taskCollectionPool;
-		}
+    public boolean isExist(String id) {
+        return Collection.isExist(id);
+    }
 
-	}
+    public void put(String id) {
+        Collection.put(id);
+    }
 
-	{
-		threadPoolExecutor=new ThreadPoolExecutor(1,1,120L, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(1000));
-	}
+    public void remove(String id) {
+        if (isExist(id)) {
+            Collection.remove(id);
+        }
+    }
 
-	public void doAction(TaskThread taskThread){
-		put(taskThread.element.getId());
-		threadPoolExecutor.submit(taskThread);
-	}
+    private enum SingleTon {
+        instance;
+        private TaskCollectionPool taskCollectionPool;
 
-	public boolean isExist(String id){
-		return Collection.isExist(id);
-	}
+        private SingleTon() {
+            taskCollectionPool = new TaskCollectionPool();
+        }
 
-	public void put(String id){
-		Collection.put(id);
-	}
+        public TaskCollectionPool getTaskCollectionPool() {
+            return taskCollectionPool;
+        }
 
-	public void remove(String id){
-		if(isExist(id)){
-			Collection.remove(id);
-		}
-	}
+    }
 
-	private static class Collection{
-		private static Set<String> elements=new ConcurrentSkipListSet<>();
+    private static class Collection {
+        private static Set<String> elements = new ConcurrentSkipListSet<>();
 
-		private static boolean isExist(String id){
-			return elements.contains(id);
-		}
+        private static boolean isExist(String id) {
+            return elements.contains(id);
+        }
 
-		private static void put(String id){
-			elements.add(id);
-		}
+        private static void put(String id) {
+            elements.add(id);
+        }
 
-		private static void remove(String id){
-			elements.remove(id);
-		}
-	}
+        private static void remove(String id) {
+            elements.remove(id);
+        }
+    }
 
 
 }

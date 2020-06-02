@@ -5,5 +5,5 @@ import org.jvnet.hk2.annotations.Contract;
 @Contract
 public interface InitService {
 
-	void init();
+    void init();
 }
